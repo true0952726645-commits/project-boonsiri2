@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ล้านนา Travel — สถานที่ท่องเที่ยวภาคเหนือ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Sarabun:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #C9A84C;
+      --deep: #1A1009;
+      --cream: #FAF6EE;
+      --brown: #6B4226;
+      --green: #2D5016;
+      --mist: #F0EBE1;
+    }
+
+    body {
+      font-family: 'Sarabun', sans-serif;
+      background: var(--cream);
+      color: var(--deep);
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: #fff;
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      height: 56px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--brown); font-weight: 700; }
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 1.8rem; }
+    .nav-links a {
+      font-size: 13px; color: var(--deep); text-decoration: none;
+      opacity: 0.7; letter-spacing: 0.3px; cursor: pointer; transition: opacity 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative; width: 100%; height: 520px; overflow: hidden;
+      background: linear-gradient(135deg, #1A3A1A 0%, #2D5016 40%, #4A7C2A 70%, #6B9A3A 100%);
+      display: flex; align-items: center; justify-content: center; text-align: center;
+    }
+    .hero-mist {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 80%, rgba(255,255,255,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 30% at 20% 60%, rgba(255,255,255,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 80% 70%, rgba(255,255,255,0.07) 0%, transparent 60%);
+    }
+    .mountain-svg { position: absolute; bottom: 0; left: 0; width: 100%; height: 220px; }
+    .hero-content { position: relative; z-index: 10; padding: 2rem; }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(201,168,76,0.2); border: 1px solid var(--gold);
+      color: var(--gold); font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+      padding: 6px 18px; border-radius: 20px; margin-bottom: 1.2rem;
+      font-family: 'Sarabun', sans-serif; font-weight: 500;
+    }
+    .hero-title {
+      font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 700;
+      color: #fff; line-height: 1.15; margin-bottom: 0.8rem;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.4);
+    }
+    .hero-title span { color: var(--gold); }
+    .hero-sub {
+      color: rgba(255,255,255,0.75); font-size: 1rem; font-weight: 300;
+      letter-spacing: 0.5px; max-width: 480px; margin: 0 auto 2rem;
+    }
+    .hero-stats { display: flex; gap: 2.5rem; justify-content: center; }
+    .stat { text-align: center; }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--gold); display: block; font-weight: 700; }
+    .stat-label { font-size: 11px; color: rgba(255,255,255,0.6); letter-spacing: 1px; text-transform: uppercase; }
+
+    /* ── SECTIONS ── */
+    .section { padding: 3.5rem 2rem; }
+    .section-head { text-align: center; margin-bottom: 2.5rem; }
+    .section-kicker { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 500; display: block; margin-bottom: 0.6rem; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--deep); font-weight: 700; }
+    .section-line { width: 48px; height: 2px; background: var(--gold); margin: 0.8rem auto 0; border-radius: 2px; }
+
+    /* ── CARDS ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem; max-width: 1100px; margin: 0 auto;
+    }
+    .card {
+      background: #fff; border-radius: 16px; overflow: hidden;
+      border: 0.5px solid rgba(0,0,0,0.08);
+      transition: transform 0.25s, box-shadow 0.25s; cursor: pointer;
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(107,66,38,0.12); }
+    .card-img-ph {
+      width: 100%; height: 200px; display: flex; align-items: center; justify-content: center;
+      font-size: 4rem; position: relative; overflow: hidden;
+    }
+    .card-body { padding: 1.25rem 1.4rem 1.5rem; }
+    .card-province { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: 0.4rem; }
+    .card-name { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--deep); font-weight: 700; margin-bottom: 0.5rem; line-height: 1.3; }
+    .card-desc { font-size: 13.5px; color: #6B6259; line-height: 1.7; margin-bottom: 1rem; }
+    .card-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1rem; }
+    .tag { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 500; background: var(--mist); color: var(--brown); }
+    .card-meta { display: flex; align-items: center; justify-content: space-between; }
+    .card-season { font-size: 11.5px; color: #999; display: flex; align-items: center; gap: 5px; }
+    .card-btn {
+      font-size: 12px; color: var(--brown); border: 1px solid var(--brown);
+      padding: 5px 14px; border-radius: 20px; background: transparent; cursor: pointer;
+      transition: all 0.2s; font-family: 'Sarabun', sans-serif; font-weight: 500;
+    }
+    .card-btn:hover { background: var(--brown); color: #fff; }
+
+    /* ── FEATURED ── */
+    .featured {
+      background: linear-gradient(135deg, #1A3A1A, #2D5016);
+      padding: 3.5rem 2rem; color: #fff;
+    }
+    .feat-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+    }
+    @media (max-width: 720px) { .feat-inner { grid-template-columns: 1fr; } }
+    .feat-kicker { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 500; display: block; margin-bottom: 0.8rem; }
+    .feat-title { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; line-height: 1.2; margin-bottom: 1rem; }
+    .feat-desc { font-size: 14px; line-height: 1.8; color: rgba(255,255,255,0.75); margin-bottom: 1.5rem; }
+    .feat-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .feat-list li { font-size: 13.5px; color: rgba(255,255,255,0.8); padding-left: 1.2rem; position: relative; }
+    .feat-list li::before { content: '◆'; position: absolute; left: 0; color: var(--gold); font-size: 8px; top: 3px; }
+    .feat-visual {
+      border-radius: 20px; overflow: hidden;
+      background: linear-gradient(160deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.1); padding: 2rem;
+    }
+    .feat-emoji { text-align: center; font-size: 4rem; margin-bottom: 1rem; }
+    .feat-detail-item {
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding: 1rem 0; display: flex; justify-content: space-between; align-items: center;
+    }
+    .feat-detail-item:last-child { border: none; }
+    .feat-detail-label { font-size: 12px; color: rgba(255,255,255,0.5); letter-spacing: 1px; text-transform: uppercase; }
+    .feat-detail-val { font-size: 14px; color: #fff; font-weight: 500; text-align: right; }
+
+    /* ── PROVINCE FILTER ── */
+    .province-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem; max-width: 900px; margin: 0 auto;
+    }
+    .prov-card {
+      background: #fff; border: 1px solid rgba(0,0,0,0.1); border-radius: 12px;
+      padding: 1.2rem; text-align: center; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .prov-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+    .prov-card.all { background: var(--mist); border-color: rgba(0,0,0,0.08); }
+    .prov-emoji { font-size: 2rem; margin-bottom: 0.5rem; }
+    .prov-name { font-size: 13px; font-weight: 500; color: var(--deep); }
+    .prov-count { font-size: 11px; color: #999; margin-top: 2px; }
+    .all .prov-name { color: var(--brown); }
+
+    /* ── BANNER ── */
+    .banner {
+      background: var(--mist); padding: 3rem 2rem; text-align: center;
+      border-top: 1px solid rgba(0,0,0,0.07); border-bottom: 1px solid rgba(0,0,0,0.07);
+    }
+    .banner-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--deep); margin-bottom: 0.5rem; }
+    .banner-sub { font-size: 14px; color: #888; margin-bottom: 1.5rem; }
+    .banner-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--brown); color: #fff; padding: 10px 26px; border-radius: 25px;
+      border: none; font-size: 14px; cursor: pointer; font-family: 'Sarabun', sans-serif; font-weight: 500;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: var(--deep); }
+    .btn-outline {
+      background: transparent; color: var(--brown); padding: 10px 26px; border-radius: 25px;
+      border: 1.5px solid var(--brown); font-size: 14px; cursor: pointer;
+      font-family: 'Sarabun', sans-serif; font-weight: 500;
+    }
+
+    /* ── FOOTER ── */
+    footer { background: var(--deep); color: rgba(255,255,255,0.5); text-align: center; padding: 1.5rem; font-size: 12px; letter-spacing: 0.5px; }
+    footer span { color: var(--gold); }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 999;
+      display: flex; align-items: center; justify-content: center; padding: 1rem;
+    }
+    .modal-overlay.hidden { display: none; }
+    .modal {
+      background: #fff; border-radius: 20px; max-width: 600px; width: 100%;
+      max-height: 90vh; overflow-y: auto;
+    }
+    .modal-hero {
+      width: 100%; height: 220px; display: flex; align-items: center; justify-content: center;
+      font-size: 5rem; border-radius: 20px 20px 0 0; overflow: hidden;
+    }
+    .modal-body { padding: 1.75rem; }
+    .modal-province { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: 0.3rem; }
+    .modal-title { font-family: 'Playfair Display', serif; font-size: 1.7rem; color: var(--deep); margin-bottom: 0.7rem; }
+    .modal-desc { font-size: 14.5px; line-height: 1.8; color: #555; margin-bottom: 1.2rem; }
+    .modal-info { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.2rem; }
+    .info-box { background: var(--mist); border-radius: 10px; padding: 0.75rem 1rem; }
+    .info-label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: #999; margin-bottom: 2px; }
+    .info-val { font-size: 14px; color: var(--deep); font-weight: 500; }
+    .modal-tips {
+      background: linear-gradient(135deg, #FAF3E0, #FFF8EC);
+      border-radius: 10px; padding: 1rem 1.2rem; border-left: 3px solid var(--gold);
+    }
+    .modal-tips-title { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: var(--brown); font-weight: 500; margin-bottom: 0.5rem; }
+    .modal-tips p { font-size: 13.5px; color: #666; line-height: 1.7; }
+    .modal-close {
+      display: block; width: 100%; margin-top: 1.2rem; padding: 10px;
+      background: var(--brown); color: #fff; border: none; border-radius: 25px;
+      font-size: 14px; cursor: pointer; font-family: 'Sarabun', sans-serif;
+    }
+    .modal-close:hover { background: var(--deep); }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">ล้าน<span>นา</span> Travel</div>
+  <div class="nav-links">
+    <a href="#places">สถานที่</a>
+    <a href="#nature">ธรรมชาติ</a>
+    <a href="#featured">วัฒนธรรม</a>
+    <a href="#province">ประวัติศาสตร์</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-mist"></div>
+  <svg class="mountain-svg" viewBox="0 0 1200 220" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="0,220 200,60 380,160 550,20 720,140 900,50 1100,120 1200,80 1200,220" fill="rgba(10,30,10,0.55)"/>
+    <polygon points="0,220 100,120 280,180 450,90 600,160 780,100 950,150 1100,80 1200,130 1200,220" fill="rgba(15,40,15,0.45)"/>
+    <polygon points="0,220 50,190 200,150 400,200 600,170 800,195 1000,160 1200,190 1200,220" fill="rgba(20,50,15,0.6)"/>
+  </svg>
+  <div class="hero-content">
+    <div class="hero-badge">✦ ดินแดนแห่งขุนเขาและหมอก ✦</div>
+    <div class="hero-title">สัมผัสเสน่ห์<br><span>ภาคเหนือ</span></div>
+    <div class="hero-sub">ค้นพบความงามของธรรมชาติ วัฒนธรรมล้านนา และประวัติศาสตร์อันยาวนาน ในดินแดนแห่งหมอกและขุนเขา</div>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">17</span><span class="stat-label">จังหวัด</span></div>
+      <div class="stat"><span class="stat-num">200+</span><span class="stat-label">สถานที่</span></div>
+      <div class="stat"><span class="stat-num">2,565</span><span class="stat-label">ม. สูงสุด</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- CARDS SECTION -->
+<div class="section" id="places" style="background:#fff">
+  <div class="section-head">
+    <span class="section-kicker">สถานที่แนะนำ</span>
+    <div class="section-title">จุดหมายยอดนิยม</div>
+    <div class="section-line"></div>
+  </div>
+  <div class="cards-grid" id="cards-grid"></div>
+</div>
+
+<!-- FEATURED -->
+<div class="featured" id="featured">
+  <div class="feat-inner">
+    <div>
+      <span class="feat-kicker">✦ ไฮไลท์สำคัญ</span>
+      <div class="feat-title">ดอยอินทนนท์<br>ยอดเขาสูงสุดในไทย</div>
+      <div class="feat-desc">ดอยอินทนนท์ตั้งอยู่ในอุทยานแห่งชาติดอยอินทนนท์ จังหวัดเชียงใหม่ มีความสูง 2,565 เมตรเหนือระดับน้ำทะเล เป็นจุดสูงสุดของประเทศไทย ที่นี่มีความหลากหลายของระบบนิเวศ ตั้งแต่ป่าเมฆ กล้วยไม้ป่า ไปจนถึงนกหายากกว่า 400 ชนิด</div>
+      <ul class="feat-list">
+        <li>เจดีย์นภเมทนีดลและนภพลภูมิสิริ รำลึกถึงรัชกาลที่ 9</li>
+        <li>น้ำตกแม่กลาง — น้ำตกที่สวยงามกลางป่าดิบ</li>
+        <li>หมู่บ้านชนเผ่าปกาเกอะญอ ที่มีวัฒนธรรมเป็นเอกลักษณ์</li>
+        <li>ป่าเมฆและกล้วยไม้หายากกว่า 300 สายพันธุ์</li>
+      </ul>
+    </div>
+    <div class="feat-visual">
+      <div class="feat-emoji">🏔️</div>
+      <div class="feat-detail-item"><span class="feat-detail-label">ความสูง</span><span class="feat-detail-val">2,565 เมตร</span></div>
+      <div class="feat-detail-item"><span class="feat-detail-label">จังหวัด</span><span class="feat-detail-val">เชียงใหม่</span></div>
+      <div class="feat-detail-item"><span class="feat-detail-label">ฤดูกาลที่ดีที่สุด</span><span class="feat-detail-val">ต.ค. — ก.พ.</span></div>
+      <div class="feat-detail-item"><span class="feat-detail-label">พื้นที่อุทยาน</span><span class="feat-detail-val">482 ตร.กม.</span></div>
+      <div class="feat-detail-item"><span class="feat-detail-label">นกหายาก</span><span class="feat-detail-val">400+ ชนิด</span></div>
+      <div class="feat-detail-item"><span class="feat-detail-label">ค่าเข้าชม</span><span class="feat-detail-val">300 บาท / ชาวต่างชาติ</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROVINCE FILTER -->
+<div class="section" id="province">
+  <div class="section-head">
+    <span class="section-kicker">แนะนำโดยจังหวัด</span>
+    <div class="section-title">สำรวจตามพื้นที่</div>
+    <div class="section-line"></div>
+  </div>
+  <div class="province-grid">
+    <div class="prov-card" onclick="filterProvince('เชียงใหม่')">
+      <div class="prov-emoji">⛰️</div>
+      <div class="prov-name">เชียงใหม่</div>
+      <div class="prov-count">3 สถานที่</div>
+    </div>
+    <div class="prov-card" onclick="filterProvince('เชียงราย')">
+      <div class="prov-emoji">⛩️</div>
+      <div class="prov-name">เชียงราย</div>
+      <div class="prov-count">2 สถานที่</div>
+    </div>
+    <div class="prov-card" onclick="filterProvince('สุโขทัย')">
+      <div class="prov-emoji">🏛️</div>
+      <div class="prov-name">สุโขทัย</div>
+      <div class="prov-count">1 สถานที่</div>
+    </div>
+    <div class="prov-card" onclick="filterProvince('แม่ฮ่องสอน')">
+      <div class="prov-emoji">🌄</div>
+      <div class="prov-name">แม่ฮ่องสอน</div>
+      <div class="prov-count">1 สถานที่</div>
+    </div>
+    <div class="prov-card" onclick="filterProvince('น่าน')">
+      <div class="prov-emoji">🌿</div>
+      <div class="prov-name">น่าน</div>
+      <div class="prov-count">1 สถานที่</div>
+    </div>
+    <div class="prov-card all" onclick="filterProvince('')">
+      <div class="prov-emoji">🗺️</div>
+      <div class="prov-name">ทั้งหมด</div>
+      <div class="prov-count">ทุกจังหวัด</div>
+    </div>
+  </div>
+</div>
+
+<!-- BANNER -->
+<div class="banner">
+  <div class="banner-title">พร้อมออกเดินทางแล้วหรือยัง?</div>
+  <div class="banner-sub">วางแผนการเดินทางและสัมผัสความงามของภาคเหนือด้วยตัวเอง</div>
+  <div class="banner-btns">
+    <button class="btn-primary">วางแผนทริป</button>
+    <button class="btn-outline">ดูแผนที่</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>© 2568 ล้านนา Travel · สงวนลิขสิทธิ์ · สร้างด้วย <span>♥</span> เพื่อนักท่องเที่ยวไทยและต่างชาติ</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay hidden" id="modal" onclick="closeModal(event)">
+  <div class="modal" id="modal-inner">
+    <div class="modal-hero" id="modal-hero"></div>
+    <div class="modal-body">
+      <div class="modal-province" id="modal-prov"></div>
+      <div class="modal-title" id="modal-name"></div>
+      <div class="modal-desc" id="modal-desc"></div>
+      <div class="modal-info" id="modal-info"></div>
+      <div class="modal-tips">
+        <div class="modal-tips-title">💡 เคล็ดลับสำหรับนักท่องเที่ยว</div>
+        <p id="modal-tip"></p>
+      </div>
+      <button class="modal-close" onclick="document.getElementById('modal').classList.add('hidden')">✕ ปิด</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const places = [
+    {
+      bg: 'linear-gradient(135deg,#1A4A1A,#4A8A2A)',
+      img: 'image/download (7).jpg',
+      imgFallback: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80',
+      province: 'เชียงใหม่',
+      name: 'ดอยอินทนนท์',
+      desc: 'ยอดเขาสูงสุดของประเทศไทย ความสูง 2,565 เมตร เต็มไปด้วยป่าเมฆ กล้วยไม้ป่า และนกหายากกว่า 400 ชนิด อากาศหนาวเย็นตลอดปี',
+      tags: ['ธรรมชาติ', 'ขุนเขา', 'อุทยาน'],
+      season: 'ต.ค. — ก.พ.',
+      info: [
+        { l: 'ความสูง', v: '2,565 ม.' },
+        { l: 'ค่าเข้า', v: '300 บาท' },
+        { l: 'ระยะทาง', v: 'จาก ชม. 58 กม.' },
+        { l: 'เวลา', v: 'ทั้งวัน' }
+      ],
+      tip: 'ควรเตรียมเสื้อกันหนาวหนาๆ แม้ในฤดูร้อน อุณหภูมิบนดอยอาจต่ำถึง 0°C ในช่วงฤดูหนาว และควรออกเดินทางแต่เช้าเพื่อชมทะเลหมอก'
+    },
+    {
+      bg: 'linear-gradient(135deg,#BDBDBD,#EEEEEE)',
+      img: 'image/download (6).jpg',
+      imgFallback: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80',
+      province: 'เชียงราย',
+      name: 'วัดร่องขุ่น (วัดขาว)',
+      desc: 'วัดสีขาวสุดอลังการที่ออกแบบโดยอาจารย์เฉลิมชัย โฆษิตพิพัฒน์ ความงามของงานปูนปั้นลวดลายวิจิตร สะท้อนความเชื่อทางพุทธศาสนาได้อย่างลึกซึ้ง',
+      tags: ['วัด', 'ศิลปะ', 'สถาปัตยกรรม'],
+      season: 'ตลอดปี',
+      info: [
+        { l: 'เปิดบริการ', v: '07:00 — 17:30' },
+        { l: 'ค่าเข้า', v: 'ฟรี' },
+        { l: 'จังหวัด', v: 'เชียงราย' },
+        { l: 'ระยะทาง', v: '13 กม. จากตัวเมือง' }
+      ],
+      tip: 'ควรแต่งกายสุภาพ ไม่สวมกางเกงขาสั้นหรือเสื้อแขนกุด มีผ้าคลุมให้ยืมที่ทางเข้า วิธีถ่ายรูปที่ดีที่สุดคือช่วงเช้าตรู่ก่อนนักท่องเที่ยวหนาแน่น'
+    },
+    {
+      bg: 'linear-gradient(135deg,#8B6914,#C49A28)',
+      img: 'image/download (5).jpg',
+      imgFallback: 'https://images.unsplash.com/photo-1540649410-bba4ec2f0b01?w=600&q=80',
+      province: 'สุโขทัย',
+      name: 'อุทยานประวัติศาสตร์สุโขทัย',
+      desc: 'มรดกโลกของ UNESCO เมืองหลวงแห่งแรกของไทย เต็มไปด้วยซากวัดและเจดีย์อายุกว่า 700 ปี โดดเด่นด้วยสถาปัตยกรรมสุโขทัยอันเป็นเอกลักษณ์',
+      tags: ['ประวัติศาสตร์', 'UNESCO', 'โบราณคดี'],
+      season: 'ต.ค. — ก.พ.',
+      info: [
+        { l: 'ยุคสมัย', v: 'ศตวรรษที่ 13-15' },
+        { l: 'ค่าเข้า', v: '100 บาท' },
+        { l: 'พื้นที่', v: '70 ตร.กม.' },
+        { l: 'วัดสำคัญ', v: '30+ แห่ง' }
+      ],
+      tip: 'ควรเช่าจักรยานจากทางเข้าอุทยาน เพื่อสำรวจวัดต่างๆ ได้อย่างสะดวก แนะนำเที่ยวช่วงเช้าหรือบ่ายแก่ๆ ที่อากาศเย็นสบาย'
+    },
+    {
+      bg: 'linear-gradient(135deg,#1A3550,#2A5580)',
+      img: 'image/download (4).jpg',
+      imgFallback: 'https://images.unsplash.com/photo-1499678329028-101435549a4e?w=600&q=80',
+      province: 'แม่ฮ่องสอน',
+      name: 'ปาย',
+      desc: 'เมืองเล็กๆ ในหุบเขาที่มีเสน่ห์เฉพาะตัว ล้อมรอบด้วยธรรมชาติสวยงาม มีสะพานประวัติศาสตร์ น้ำพุร้อน และวิถีชีวิตผสมผสานระหว่างไทยใหญ่และจีนยูนนาน',
+      tags: ['ธรรมชาติ', 'วิถีชีวิต', 'ชนเผ่า'],
+      season: 'พ.ย. — ก.พ.',
+      info: [
+        { l: 'ระยะทาง', v: 'จาก ชม. 135 กม.' },
+        { l: 'ค่าเข้า', v: 'ฟรี' },
+        { l: 'ที่พัก', v: 'หลากหลายสไตล์' },
+        { l: 'กิจกรรม', v: 'เดินป่า แช่น้ำพุร้อน' }
+      ],
+      tip: 'เส้นทาง 762 โค้งจากเชียงใหม่ถึงปาย แนะนำให้ขับรถเองหรือนั่งรถมินิบัส หลีกเลี่ยงช่วงฤดูฝนเพราะถนนอาจลื่น'
+    },
+    {
+      bg: 'linear-gradient(135deg,#2A1A3A,#5A2A7A)',
+      img: 'image/download (3).jpg',
+      imgFallback: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80',
+      province: 'เชียงราย',
+      name: 'วัดร่องเสือเต้น (วัดฟ้า)',
+      desc: 'วัดสีน้ำเงินสุดตระการตาที่ได้รับการยกย่องด้านความสวยงาม ลวดลายปูนปั้นสีน้ำเงินเข้มสดใสภายในอุโบสถ สะท้อนถึงพุทธศิลป์แบบร่วมสมัย',
+      tags: ['วัด', 'ศิลปะ', 'สีน้ำเงิน'],
+      season: 'ตลอดปี',
+      info: [
+        { l: 'เปิดบริการ', v: '08:00 — 17:00' },
+        { l: 'ค่าเข้า', v: 'ฟรี' },
+        { l: 'จังหวัด', v: 'เชียงราย' },
+        { l: 'ผู้สร้าง', v: 'พุทธา อินทชัย' }
+      ],
+      tip: 'วัดนี้ไม่อนุญาตให้แต่งกายที่ไม่สุภาพเข้าภายใน ควรถ่ายรูปในช่วงที่มีแสงสว่างพอดีเพื่อให้ได้สีน้ำเงินที่สวยงาม'
+    },
+    {
+      bg: 'linear-gradient(135deg,#1A3A25,#2A6A3A)',
+      img: 'image/download (2).jpg',
+      imgFallback: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80',
+      province: 'น่าน',
+      name: 'เมืองน่าน',
+      desc: 'เมืองเก่าที่ยังคงความเงียบสงบ อบอวลด้วยกลิ่นอายล้านนาดั้งเดิม มีวัดวาอารามโบราณ จิตรกรรมฝาผนังที่หาดูได้ยาก และธรรมชาติขุนเขาที่สวยงาม',
+      tags: ['เมืองเก่า', 'วัฒนธรรม', 'สงบ'],
+      season: 'พ.ย. — ม.ค.',
+      info: [
+        { l: 'ระยะทาง', v: 'จาก กทม. 668 กม.' },
+        { l: 'ค่าเข้า', v: 'ฟรี (บางวัด)' },
+        { l: 'สถานที่เด่น', v: 'วัดภูมินทร์' },
+        { l: 'ชนเผ่า', v: 'มลาบรี, ลัวะ' }
+      ],
+      tip: 'อย่าพลาดวัดภูมินทร์ที่มีภาพจิตรกรรม "ผู้ชายกระซิบ" อันโด่งดัง และตลาดเช้าที่มีสินค้าท้องถิ่นหลากหลาย'
+    },
+    {
+      bg: 'linear-gradient(135deg,#3A2810,#7A5520)',
+      img: 'image/download (1).jpg',
+      imgFallback: 'https://images.unsplash.com/photo-1474511320723-9a56873867b5?w=600&q=80',
+      province: 'เชียงใหม่',
+      name: 'สวนสัตว์เชียงใหม่',
+      desc: 'สวนสัตว์ชื่อดังบนเชิงดอยสุเทพ ที่ตื่นตาตื่นใจด้วยแพนด้ายักษ์จากจีน และสัตว์นานาชนิดในบรรยากาศป่าเขาร่มรื่น เหมาะสำหรับครอบครัว',
+      tags: ['สวนสัตว์', 'แพนด้า', 'ครอบครัว'],
+      season: 'ตลอดปี',
+      info: [
+        { l: 'เปิดบริการ', v: '08:00 — 17:00' },
+        { l: 'ค่าเข้า', v: '150 บาท' },
+        { l: 'แพนด้าพิเศษ', v: '+100 บาท' },
+        { l: 'พื้นที่', v: '200 ไร่' }
+      ],
+      tip: 'ซื้อตั๋วออนไลน์ล่วงหน้าเพื่อประหยัดเวลา แนะนำเดินชมตั้งแต่เช้าเพราะสัตว์จะตื่นตัวและกระฉับกระเฉงกว่าช่วงบ่าย'
+    },
+    {
+      bg: 'linear-gradient(135deg,#2A1505,#6B3A0A)',
+      img: 'image/download.jpg',
+      imgFallback: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80',
+      province: 'เชียงใหม่',
+      name: 'ประเพณีลอยกระทง ยี่เป็ง',
+      desc: 'เทศกาลแห่งแสงสว่างที่งดงามที่สุดในโลก การปล่อยโคมลอยนับพันดวงขึ้นสู่ท้องฟ้า พร้อมกิจกรรมทางวัฒนธรรมล้านนาตลอดคืน',
+      tags: ['เทศกาล', 'วัฒนธรรม', 'โคมลอย'],
+      season: 'พ.ย. (เดือน 12 เหนือ)',
+      info: [
+        { l: 'จัดปีละ', v: '1 ครั้ง' },
+        { l: 'ระยะเวลา', v: '3 วัน 3 คืน' },
+        { l: 'สถานที่หลัก', v: 'ท่าแพ, แม่ปิง' },
+        { l: 'ควรจอง', v: 'ล่วงหน้า 6 เดือน' }
+      ],
+      tip: 'ควรจองที่พักล่วงหน้าอย่างน้อย 3-6 เดือน เพราะที่พักเต็มเร็วมาก แนะนำไปชมที่วัดพระสิงห์หรือบริเวณเวียงแก้ว'
+    }
+  ];
+
+  function imgTag(p, h) {
+    return `<img
+      src="${p.img}"
+      onerror="this.onerror=null;this.src='${p.imgFallback}'"
+      alt="${p.name}"
+      style="width:100%;height:${h}px;object-fit:cover;display:block;"
+    />`;
+  }
+
+  function renderCards(data) {
+    const grid = document.getElementById('cards-grid');
+    grid.innerHTML = data.map((p) => `
+      <div class="card" onclick="openModal(${places.indexOf(p)})">
+        <div style="width:100%;height:200px;overflow:hidden;background:${p.bg}">
+          ${imgTag(p, 200)}
+        </div>
+        <div class="card-body">
+          <div class="card-province">${p.province}</div>
+          <div class="card-name">${p.name}</div>
+          <div class="card-desc">${p.desc.substring(0, 90)}...</div>
+          <div class="card-tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+          <div class="card-meta">
+            <div class="card-season">🗓 ${p.season}</div>
+            <button class="card-btn">ดูรายละเอียด</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function filterProvince(prov) {
+    const filtered = prov ? places.filter(p => p.province === prov) : places;
+    renderCards(filtered);
+    document.getElementById('places').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function openModal(i) {
+    const p = places[i];
+    document.getElementById('modal-hero').style.background = p.bg;
+    document.getElementById('modal-hero').innerHTML = imgTag(p, 220);
+    document.getElementById('modal-prov').textContent = p.province;
+    document.getElementById('modal-name').textContent = p.name;
+    document.getElementById('modal-desc').textContent = p.desc;
+    document.getElementById('modal-info').innerHTML = p.info.map(x =>
+      `<div class="info-box"><div class="info-label">${x.l}</div><div class="info-val">${x.v}</div></div>`
+    ).join('');
+    document.getElementById('modal-tip').textContent = p.tip;
+    document.getElementById('modal').classList.remove('hidden');
+  }
+
+  function closeModal(e) {
+    if (e.target === document.getElementById('modal')) {
+      document.getElementById('modal').classList.add('hidden');
+    }
+  }
+
+  renderCards(places);
+</script>
+</body>
+</html>
